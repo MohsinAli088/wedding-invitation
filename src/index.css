@@ -1,0 +1,281 @@
+@import 'tailwindcss';
+@import 'lenis/dist/lenis.css';
+
+/* Palette and type sampled from "Save the date PDF.pdf" */
+@theme {
+  --color-rust: #b54226;
+  --color-crimson: #b22d2f;
+  --color-teal-deep: #01424e;
+  --color-ink: #321d0f;
+  --color-paper: #f7f2e8;
+  --color-gold: #f4b946;
+
+  --font-serif: 'Crimson Pro', 'Minion Pro', Georgia, serif;
+  --font-gujarati: 'Noto Serif Gujarati', 'Crimson Pro', serif;
+  --font-devanagari: 'Noto Serif Devanagari', 'Crimson Pro', serif;
+
+  --ease-silk: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-rust font-serif text-ink antialiased;
+    background-image: radial-gradient(rgb(255 255 255 / 0.08) 1px, transparent 1px);
+    background-size: 6px 6px;
+  }
+}
+
+@layer components {
+  /* Orange + teal block-print border lifted from the PDF artwork */
+  .card-frame {
+    --bw: 14px;
+    border: var(--bw) solid transparent;
+    border-image: url('/images/frame.png') 68 round;
+    background: url('/images/paper.jpg') center / cover, var(--color-paper);
+    background-clip: padding-box;
+  }
+  @media (min-width: 640px) {
+    .card-frame { --bw: 20px; }
+  }
+  @media (min-width: 1024px) {
+    .card-frame { --bw: 26px; }
+  }
+
+  /* Moonlit card for the Golden Era sangeet night */
+  .card-night {
+    background:
+      radial-gradient(ellipse at 75% 8%, rgb(120 140 220 / 0.35), transparent 55%),
+      radial-gradient(ellipse at 20% 90%, rgb(70 40 120 / 0.35), transparent 60%),
+      linear-gradient(180deg, #121c40, #0a1028 60%, #070a1c);
+    background-clip: padding-box;
+  }
+
+  /* ---------- theme elements (paused until their page is in view) ---------- */
+  .decor-flame,
+  .decor-glow,
+  .decor-bell,
+  .decor-wheel,
+  .decor-cabin,
+  .decor-flag,
+  .decor-star,
+  .decor-shooting,
+  .decor-spin,
+  .decor-toran,
+  .decor-bob,
+  .decor-leaf,
+  .decor-petal {
+    animation-play-state: paused;
+  }
+  .is-inview :is(.decor-flame, .decor-glow, .decor-bell, .decor-wheel, .decor-cabin, .decor-flag, .decor-star,
+    .decor-shooting, .decor-spin, .decor-toran, .decor-bob, .decor-leaf, .decor-petal) {
+    animation-play-state: running;
+  }
+  .decor-flame { transform-box: fill-box; transform-origin: 50% 100%; animation: flicker 1.6s ease-in-out infinite; }
+  .decor-glow { transform-box: fill-box; transform-origin: center; animation: glow 2.4s ease-in-out infinite; }
+  .decor-bell { transform-origin: 50% 0; animation: bell 3.2s ease-in-out infinite; }
+  .decor-wheel { animation: spin-slow 30s linear infinite; }
+  .decor-cabin { animation: spin-slow 30s linear infinite reverse; }
+  .decor-flag { animation: flag 3s ease-in-out infinite; }
+  .decor-star { animation: twinkle 3s ease-in-out infinite; }
+  .decor-shooting { opacity: 0; transform: rotate(18deg); animation: shooting 7s ease-in 2s infinite; }
+  .decor-spin { animation: spin-slow 90s linear infinite; }
+  .decor-toran { transform-origin: 50% 0; animation: bell 4.5s ease-in-out infinite; }
+  .decor-bob { animation: float 5s ease-in-out infinite; }
+  .decor-leaf,
+  .decor-petal { opacity: 0; animation: drift-down 12s linear infinite; }
+  .decor-draw {
+    opacity: 0;
+    transition: opacity 2s ease 0.3s;
+  }
+  .is-inview .decor-draw { opacity: 0.3; }
+
+  /* ---------- scroll-triggered motion ---------- */
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    filter: blur(8px);
+    transition:
+      opacity 1.1s var(--ease-silk),
+      transform 1.1s var(--ease-silk),
+      filter 1.1s var(--ease-silk);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+
+  .split-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.45em) scale(0.9);
+    filter: blur(6px);
+    transition:
+      opacity 0.8s var(--ease-silk),
+      transform 0.8s var(--ease-silk),
+      filter 0.8s var(--ease-silk);
+  }
+  .split-char.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+
+  /* Watercolour wash that blooms over a page as it arrives */
+  .ink-bloom {
+    opacity: 0;
+    transform: scale(0.25);
+  }
+  .is-inview .ink-bloom {
+    animation: ink-bloom 2.4s var(--ease-silk) forwards;
+  }
+
+  /* Garland lowers in, peacock rises from the corner */
+  .card-garland {
+    opacity: 0;
+    transform: translateY(-105%);
+    transition:
+      transform 1.6s var(--ease-silk) 0.15s,
+      opacity 0.8s ease 0.15s;
+  }
+  .card-peacock {
+    opacity: 0;
+    transform: translateY(45%);
+    transition:
+      transform 1.7s var(--ease-silk) 0.3s,
+      opacity 1s ease 0.3s;
+  }
+  .is-inview .card-garland,
+  .is-inview .card-peacock {
+    opacity: 1;
+    transform: none;
+  }
+
+  .logo-in {
+    opacity: 0;
+    transform: scale(0.82) rotate(-12deg);
+    filter: blur(10px);
+    transition:
+      opacity 1.6s var(--ease-silk),
+      transform 1.8s var(--ease-silk),
+      filter 1.6s var(--ease-silk);
+  }
+  .logo-in.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+
+  .falling-marigold {
+    position: absolute;
+    top: -12%;
+    opacity: 0;
+    animation: marigold-fall var(--dur) linear var(--delay) forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .split-char,
+    .logo-in,
+    .card-garland,
+    .card-peacock {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      transition: none;
+    }
+    .ink-bloom,
+    .falling-marigold,
+    .decor-leaf,
+    .decor-petal,
+    .decor-shooting {
+      display: none;
+    }
+    [class*='decor-'] {
+      animation: none !important;
+    }
+  }
+}
+
+@keyframes ink-bloom {
+  0% { opacity: 0; transform: scale(0.25) rotate(-8deg); }
+  18% { opacity: 0.95; }
+  55% { opacity: 0.75; }
+  100% { opacity: 0; transform: scale(1.9) rotate(6deg); }
+}
+
+@keyframes marigold-fall {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(0deg); }
+  8% { opacity: 1; }
+  50% { transform: translate3d(var(--drift), 55vh, 0) rotate(calc(var(--spin) * 0.5)); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(calc(var(--drift) * -0.4), 115vh, 0) rotate(var(--spin)); }
+}
+
+@keyframes flicker {
+  0%, 100% { transform: scale(1, 1) rotate(-2deg); }
+  25% { transform: scale(0.94, 1.08) rotate(2deg); }
+  50% { transform: scale(1.04, 0.95) rotate(-1deg); }
+  75% { transform: scale(0.97, 1.05) rotate(1.5deg); }
+}
+@keyframes glow {
+  0%, 100% { opacity: 0.14; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.15); }
+}
+@keyframes bell {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+@keyframes flag {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+@keyframes shooting {
+  0%, 82% { opacity: 0; translate: 0 0; }
+  85% { opacity: 1; }
+  100% { opacity: 0; translate: 260px 85px; }
+}
+@keyframes drift-down {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(0deg); }
+  10% { opacity: 0.85; }
+  50% { transform: translate3d(var(--drift, 40px), 55vh, 0) rotate(180deg); }
+  90% { opacity: 0.85; }
+  100% { opacity: 0; transform: translate3d(calc(var(--drift, 40px) * -0.5), 120vh, 0) rotate(360deg); }
+}
+
+@utility tracking-name {
+  letter-spacing: 0.42em;
+  margin-right: -0.42em; /* keep spaced caps optically centred */
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(1.4deg); }
+}
+@utility animate-sway {
+  animation: sway 7s ease-in-out infinite;
+  transform-origin: top left;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@utility animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+@utility animate-spin-slow {
+  animation: spin-slow 40s linear infinite;
+}
