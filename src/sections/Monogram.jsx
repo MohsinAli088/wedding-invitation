@@ -12,7 +12,7 @@ function Logo() {
   return (
     <div ref={ref} className="animate-float">
       <img
-        src={img('logo.png')}
+        src={img('logo.webp')}
         alt="Prarthana and Yatin monogram — Seven Bond, Seven Lifetimes"
         className={`logo-in mx-auto w-60 sm:w-72 lg:w-80 ${inView && cardSince > 0 ? 'is-visible' : ''}`}
         style={{ transitionDelay: `${INK_LEAD_MS}ms` }}

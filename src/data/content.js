@@ -2,6 +2,9 @@
 // na lota.docx" (Janam-1) and "Save the date PDF.pdf". Keep the Gujarati,
 // Sanskrit and Hindi exactly as written.
 
+// Background song; put the file at public/audio/preet-re.mp3
+export const music = { src: 'audio/preet-re.mp3', title: 'Preet Re', volume: 0.6 }
+
 export const couple = {
   bride: 'Prarthana',
   groom: 'Yatin',

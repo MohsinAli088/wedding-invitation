@@ -1,6 +1,7 @@
 import Lenis from 'lenis'
 import { useEffect, useRef, useState } from 'react'
 import Intro from './components/Intro'
+import MusicPlayer from './components/MusicPlayer'
 import NavDots from './components/NavDots'
 import { GateContext, prefersReducedMotion } from './components/motion'
 import { events } from './data/content'
@@ -26,6 +27,7 @@ export default function App() {
     () => prefersReducedMotion() || (import.meta.env.DEV && new URLSearchParams(location.search).has('skipIntro')),
   )
   const lenisRef = useRef(null)
+  const musicRef = useRef(null)
 
   // Smooth, eased scrolling (touch devices keep native scrolling)
   useEffect(() => {
@@ -49,7 +51,8 @@ export default function App() {
 
   return (
     <GateContext.Provider value={introDone}>
-      {!introDone && <Intro onDone={() => setIntroDone(true)} />}
+      <MusicPlayer ref={musicRef} />
+      {!introDone && <Intro onOpen={() => musicRef.current?.start()} onDone={() => setIntroDone(true)} />}
       <main>
         <NavDots items={sections} />
         <Ganesh />

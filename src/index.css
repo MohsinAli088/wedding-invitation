@@ -33,8 +33,8 @@
   .card-frame {
     --bw: 14px;
     border: var(--bw) solid transparent;
-    border-image: url('/images/frame.png') 68 round;
-    background: url('/images/paper.jpg') center / cover, var(--color-paper);
+    border-image: url('/images/frame.webp') 68 round;
+    background: url('/images/paper.webp') center / cover, var(--color-paper);
     background-clip: padding-box;
   }
   @media (min-width: 640px) {
@@ -170,6 +170,21 @@
     filter: blur(0);
   }
 
+  .intro-loader {
+    animation: seal-pulse 1.6s ease-in-out infinite;
+  }
+  .intro-ready {
+    animation: seal-ready 2.2s ease-in-out infinite;
+  }
+
+  .music-bar {
+    height: 30%;
+    transition: height 0.3s ease;
+  }
+  .music-bar.is-playing {
+    animation: music-bar 0.9s ease-in-out infinite alternate;
+  }
+
   .falling-marigold {
     position: absolute;
     top: -12%;
@@ -214,6 +229,21 @@
   50% { transform: translate3d(var(--drift), 55vh, 0) rotate(calc(var(--spin) * 0.5)); }
   85% { opacity: 1; }
   100% { opacity: 0; transform: translate3d(calc(var(--drift) * -0.4), 115vh, 0) rotate(var(--spin)); }
+}
+
+@keyframes music-bar {
+  0% { height: 25%; }
+  100% { height: 100%; }
+}
+
+@keyframes seal-ready {
+  0%, 100% { box-shadow: 0 3px 8px rgb(60 50 20 / 0.3), 0 0 0 0 rgb(181 66 38 / 0.35); }
+  50% { box-shadow: 0 3px 8px rgb(60 50 20 / 0.3), 0 0 0 14px rgb(181 66 38 / 0); }
+}
+
+@keyframes seal-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.06); opacity: 1; }
 }
 
 @keyframes flicker {

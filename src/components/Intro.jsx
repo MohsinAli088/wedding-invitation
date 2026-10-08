@@ -26,6 +26,12 @@ const outCubic = (p) => 1 - (1 - p) ** 3
 const inCubic = (p) => p ** 3
 const inOutCubic = (p) => (p < 0.5 ? 4 * p ** 3 : 1 - (-2 * p + 2) ** 3 / 2)
 
+const SITE_IMAGES = [
+  'paper.webp', 'frame.webp', 'logo.webp', 'garland.webp', 'marigold.webp', 'peacock.webp',
+  'ink-1.webp', 'ink-2.webp', 'ampersand.webp',
+  ...['lotus', 'agni', 'waves', 'north-star', 'infinity', 'knot', 'sun-moon'].map((n) => `icon-${n}.png`),
+]
+
 const OLIVE = '#6b7b34'
 const OLIVE_DARK = '#5d6c2c'
 const OLIVE_LIGHT = '#76873b'
@@ -77,7 +83,7 @@ function envelopeAt(t, g, vw, vh) {
   }
 }
 
-export default function Intro({ onDone }) {
+export default function Intro({ onOpen, onDone }) {
   const [phase, setPhase] = useState('loading')
   const refs = {
     root: useRef(null),
@@ -94,20 +100,29 @@ export default function Intro({ onDone }) {
   const doneRef = useRef(onDone)
   doneRef.current = onDone
 
-  // Wait for artwork so the sequence doesn't play over half-loaded images
+  // Download and decode every image the site uses (plus the web fonts) before
+  // playing, so on a slow connection nothing animates in half-loaded.
   useEffect(() => {
-    const srcs = [img('logo.png'), img('frame.png'), img('paper.jpg'), img('garland.png'), img('marigold.png')]
-    const loads = srcs.map(
-      (src) =>
+    const loads = SITE_IMAGES.map(
+      (name) =>
         new Promise((res) => {
-          const img = new Image()
-          img.onload = img.onerror = res
-          img.src = src
+          const el = new Image()
+          el.onload = () => (el.decode ? el.decode().then(res, res) : res())
+          el.onerror = res
+          el.src = img(name)
         }),
     )
-    const timeout = new Promise((res) => setTimeout(res, 3000))
-    Promise.race([Promise.all(loads), timeout]).then(() => setPhase('playing'))
+    const fonts = document.fonts?.ready ?? Promise.resolve()
+    const timeout = new Promise((res) => setTimeout(res, 15000))
+    // dev ?introAt= inspection skips the tap
+    const inspecting = import.meta.env.DEV && new URLSearchParams(location.search).has('introAt')
+    Promise.race([Promise.all([...loads, fonts]), timeout]).then(() => setPhase(inspecting ? 'playing' : 'ready'))
   }, [])
+
+  const open = () => {
+    onOpen?.()
+    setPhase('playing')
+  }
 
   useEffect(() => {
     if (phase !== 'playing') return
@@ -214,10 +229,41 @@ export default function Intro({ onDone }) {
       role="dialog"
       aria-label="Opening invitation"
       className="fixed inset-0 z-[100] overflow-hidden bg-paper"
-      style={{ background: `url('${img('paper.jpg')}') center / cover, var(--color-paper)` }}
+      style={{ background: `url('${img('paper.webp')}') center / cover, var(--color-paper)` }}
     >
+      {phase !== 'playing' && (
+        <div role="status" className="absolute inset-0 grid place-items-center">
+          <button
+            type="button"
+            onClick={open}
+            disabled={phase === 'loading'}
+            className="group flex flex-col items-center gap-5 disabled:cursor-wait"
+          >
+            <span
+              className={`grid size-24 place-items-center rounded-full shadow-[0_3px_8px_rgba(60,50,20,0.3),inset_0_-3px_6px_rgba(120,110,80,0.35),inset_0_3px_5px_rgba(255,255,255,0.7)] transition group-enabled:group-hover:scale-105 sm:size-28 ${
+                phase === 'loading' ? 'intro-loader' : 'intro-ready'
+              }`}
+              style={{ background: 'radial-gradient(circle at 40% 35%, #f6f2e4, #ddd5bd 70%, #c9bf9f)' }}
+            >
+              {phase === 'loading' ? (
+                <span lang="gu" className="font-gujarati text-4xl font-bold text-rust/80">
+                  શ્રી
+                </span>
+              ) : (
+                <img src={img('logo.webp')} alt="" className="w-[80%] opacity-75 mix-blend-multiply" />
+              )}
+            </span>
+            <span className="text-xs tracking-[0.35em] text-teal-deep uppercase sm:text-sm">
+              {phase === 'loading' ? 'Opening your invitation…' : 'Tap to open'}
+            </span>
+          </button>
+        </div>
+      )}
+
+      {/* the whole scene stays hidden until its artwork has loaded */}
+      <div className="absolute inset-0" style={{ visibility: phase === 'playing' ? 'visible' : 'hidden' }}>
       <div ref={refs.garland} className="absolute top-0 left-[4%] w-[46%] max-w-[420px] sm:w-[30%] lg:w-[24%]" style={{ transform: 'translateY(-100%)' }}>
-        <img src={img('garland.png')} alt="" className="animate-sway w-full" />
+        <img src={img('garland.webp')} alt="" className="animate-sway w-full" />
       </div>
 
       {/* Envelope parts share one transform; separate layers let the card slot between them */}
@@ -240,7 +286,7 @@ export default function Intro({ onDone }) {
         <svg viewBox="0 0 100 66" preserveAspectRatio="none" className="h-full w-full">
           <defs>
             <pattern id="env-tex" patternUnits="userSpaceOnUse" width="60" height="66">
-              <image href={img('paper.jpg')} width="60" height="66" preserveAspectRatio="xMidYMid slice" />
+              <image href={img('paper.webp')} width="60" height="66" preserveAspectRatio="xMidYMid slice" />
             </pattern>
           </defs>
           <path d="M0 0 L50 37 L0 66 Z" fill={OLIVE_DARK} />
@@ -258,29 +304,36 @@ export default function Intro({ onDone }) {
             className="grid h-full w-full place-items-center rounded-full shadow-[0_3px_6px_rgba(60,50,20,0.35),inset_0_-3px_6px_rgba(120,110,80,0.35),inset_0_3px_5px_rgba(255,255,255,0.7)]"
             style={{ background: 'radial-gradient(circle at 40% 35%, #f6f2e4, #ddd5bd 70%, #c9bf9f)' }}
           >
-            <img src={img('logo.png')} alt="" className="w-[78%] opacity-70 mix-blend-multiply" />
+            <img src={img('logo.webp')} alt="" className="w-[78%] opacity-70 mix-blend-multiply" />
           </div>
         </div>
       </div>
 
       <div ref={refs.card} className="card-frame absolute top-1/2 left-1/2 grid place-items-center" style={{ opacity: 0 }}>
-        <img src={img('logo.png')} alt="" className="w-[min(60%,22rem)]" />
+        <img src={img('logo.webp')} alt="" className="w-[min(60%,22rem)]" />
       </div>
 
       {FLOWERS.map((_, i) => (
         <img
           key={i}
           ref={(el) => (refs.flowers.current[i] = el)}
-          src={img('marigold.png')}
+          src={img('marigold.webp')}
           alt=""
           className="absolute top-1/2 left-1/2 z-[7]"
           style={{ opacity: 0 }}
         />
       ))}
+      </div>
 
       <button
         type="button"
-        onClick={() => (phase === 'playing' ? (skipRef.current = true) : onDone())}
+        onClick={() => {
+          if (phase === 'playing') skipRef.current = true
+          else {
+            onOpen?.()
+            onDone()
+          }
+        }}
         className="absolute right-4 bottom-4 z-[9] border border-teal-deep/60 bg-paper/80 px-4 py-1.5 text-xs tracking-[0.3em] text-teal-deep uppercase backdrop-blur-sm transition hover:bg-teal-deep hover:text-paper sm:right-6 sm:bottom-6"
       >
         Skip

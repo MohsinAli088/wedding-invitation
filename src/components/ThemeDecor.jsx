@@ -265,15 +265,15 @@ export default function ThemeDecor({ theme }) {
             {Array.from({ length: 9 }, (_, i) => (
               <div key={i} className="decor-toran flex flex-col items-center" style={{ animationDelay: `${i * 200}ms` }}>
                 <span className="block w-px bg-[#8a6a2a]" style={{ height: `${14 + (i % 3) * 10}px` }} />
-                <img src={img('marigold.png')} alt="" className="w-5 sm:w-7" />
-                <img src={img('marigold.png')} alt="" className="-mt-1 w-4 sm:w-6" />
+                <img src={img('marigold.webp')} alt="" className="w-5 sm:w-7" />
+                <img src={img('marigold.webp')} alt="" className="-mt-1 w-4 sm:w-6" />
               </div>
             ))}
           </div>
           {PETALS.map((p, i) => (
             <img
               key={i}
-              src={img('marigold.png')}
+              src={img('marigold.webp')}
               alt=""
               className="decor-petal absolute"
               style={{

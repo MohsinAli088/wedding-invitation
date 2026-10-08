@@ -46,7 +46,7 @@ export default function Ganesh() {
           <p className="mt-1 text-sm tracking-wider text-teal-deep uppercase sm:text-base">{opening.groom.parents}</p>
         </Reveal>
         <Reveal delay={1250}>
-          <img src={img('ampersand.png')} alt="and" className="my-3 w-12 sm:w-16" />
+          <img src={img('ampersand.webp')} alt="and" className="my-3 w-12 sm:w-16" />
         </Reveal>
         <SplitText chars={opening.bride.name.toUpperCase()} label={opening.bride.name} delay={1400} className="tracking-name text-3xl font-semibold text-crimson sm:text-4xl" />
         <Reveal delay={2000}>
