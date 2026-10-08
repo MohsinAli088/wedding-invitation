@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { img } from '../asset'
 
 // Opening sequence recreated from the invitation video:
 // envelope slides in → wax seal lifts → flap opens → marigolds burst out →
@@ -95,7 +96,7 @@ export default function Intro({ onDone }) {
 
   // Wait for artwork so the sequence doesn't play over half-loaded images
   useEffect(() => {
-    const srcs = ['/images/logo.png', '/images/frame.png', '/images/paper.jpg', '/images/garland.png', '/images/marigold.png']
+    const srcs = [img('logo.png'), img('frame.png'), img('paper.jpg'), img('garland.png'), img('marigold.png')]
     const loads = srcs.map(
       (src) =>
         new Promise((res) => {
@@ -213,10 +214,10 @@ export default function Intro({ onDone }) {
       role="dialog"
       aria-label="Opening invitation"
       className="fixed inset-0 z-[100] overflow-hidden bg-paper"
-      style={{ background: "url('/images/paper.jpg') center / cover, var(--color-paper)" }}
+      style={{ background: `url('${img('paper.jpg')}') center / cover, var(--color-paper)` }}
     >
       <div ref={refs.garland} className="absolute top-0 left-[4%] w-[46%] max-w-[420px] sm:w-[30%] lg:w-[24%]" style={{ transform: 'translateY(-100%)' }}>
-        <img src="/images/garland.png" alt="" className="animate-sway w-full" />
+        <img src={img('garland.png')} alt="" className="animate-sway w-full" />
       </div>
 
       {/* Envelope parts share one transform; separate layers let the card slot between them */}
@@ -239,7 +240,7 @@ export default function Intro({ onDone }) {
         <svg viewBox="0 0 100 66" preserveAspectRatio="none" className="h-full w-full">
           <defs>
             <pattern id="env-tex" patternUnits="userSpaceOnUse" width="60" height="66">
-              <image href="/images/paper.jpg" width="60" height="66" preserveAspectRatio="xMidYMid slice" />
+              <image href={img('paper.jpg')} width="60" height="66" preserveAspectRatio="xMidYMid slice" />
             </pattern>
           </defs>
           <path d="M0 0 L50 37 L0 66 Z" fill={OLIVE_DARK} />
@@ -257,20 +258,20 @@ export default function Intro({ onDone }) {
             className="grid h-full w-full place-items-center rounded-full shadow-[0_3px_6px_rgba(60,50,20,0.35),inset_0_-3px_6px_rgba(120,110,80,0.35),inset_0_3px_5px_rgba(255,255,255,0.7)]"
             style={{ background: 'radial-gradient(circle at 40% 35%, #f6f2e4, #ddd5bd 70%, #c9bf9f)' }}
           >
-            <img src="/images/logo.png" alt="" className="w-[78%] opacity-70 mix-blend-multiply" />
+            <img src={img('logo.png')} alt="" className="w-[78%] opacity-70 mix-blend-multiply" />
           </div>
         </div>
       </div>
 
       <div ref={refs.card} className="card-frame absolute top-1/2 left-1/2 grid place-items-center" style={{ opacity: 0 }}>
-        <img src="/images/logo.png" alt="" className="w-[min(60%,22rem)]" />
+        <img src={img('logo.png')} alt="" className="w-[min(60%,22rem)]" />
       </div>
 
       {FLOWERS.map((_, i) => (
         <img
           key={i}
           ref={(el) => (refs.flowers.current[i] = el)}
-          src="/images/marigold.png"
+          src={img('marigold.png')}
           alt=""
           className="absolute top-1/2 left-1/2 z-[7]"
           style={{ opacity: 0 }}

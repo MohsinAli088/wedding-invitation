@@ -4,6 +4,7 @@ import Reveal, { INK_LEAD_MS } from '../components/Reveal'
 import SplitText from '../components/SplitText'
 import { CardContext, useInViewOnce } from '../components/motion'
 import { couple } from '../data/content'
+import { img } from '../asset'
 
 function Logo() {
   const [ref, inView] = useInViewOnce(0.2)
@@ -11,7 +12,7 @@ function Logo() {
   return (
     <div ref={ref} className="animate-float">
       <img
-        src="/images/logo.png"
+        src={img('logo.png')}
         alt="Prarthana and Yatin monogram — Seven Bond, Seven Lifetimes"
         className={`logo-in mx-auto w-60 sm:w-72 lg:w-80 ${inView && cardSince > 0 ? 'is-visible' : ''}`}
         style={{ transitionDelay: `${INK_LEAD_MS}ms` }}

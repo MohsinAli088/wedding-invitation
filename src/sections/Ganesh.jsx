@@ -3,6 +3,7 @@ import Card from '../components/Card'
 import Reveal from '../components/Reveal'
 import SplitText from '../components/SplitText'
 import { mantra, opening } from '../data/content'
+import { img } from '../asset'
 
 // Docx "MAIN PAGE 1: GANESH BHAGWAN PHOTO AND MANTRA".
 // Drop the photo at public/images/ganesh.png; until then a શ્રી medallion shows.
@@ -17,7 +18,7 @@ export default function Ganesh() {
           <span className="animate-spin-slow absolute inset-2 rounded-full border border-dashed border-teal-deep/40" />
           {hasPhoto ? (
             <img
-              src="/images/ganesh.png"
+              src={img('ganesh.png')}
               alt="Shri Ganesh"
               onError={() => setHasPhoto(false)}
               className="size-[86%] rounded-full object-cover"
@@ -45,7 +46,7 @@ export default function Ganesh() {
           <p className="mt-1 text-sm tracking-wider text-teal-deep uppercase sm:text-base">{opening.groom.parents}</p>
         </Reveal>
         <Reveal delay={1250}>
-          <img src="/images/ampersand.png" alt="and" className="my-3 w-12 sm:w-16" />
+          <img src={img('ampersand.png')} alt="and" className="my-3 w-12 sm:w-16" />
         </Reveal>
         <SplitText chars={opening.bride.name.toUpperCase()} label={opening.bride.name} delay={1400} className="tracking-name text-3xl font-semibold text-crimson sm:text-4xl" />
         <Reveal delay={2000}>

@@ -1,4 +1,5 @@
 import { mantra } from '../data/content'
+import { img } from '../asset'
 
 // "——— ◆ ———" rule from the Concept page
 export function Divider({ className = 'text-teal-deep' }) {
@@ -12,7 +13,7 @@ export function Divider({ className = 'text-teal-deep' }) {
 }
 
 export function Icon({ name, className = 'size-10' }) {
-  return <img src={`/images/icon-${name}.png`} alt="" aria-hidden="true" className={className} />
+  return <img src={img(`icon-${name}.png`)} alt="" aria-hidden="true" className={className} />
 }
 
 // Invocation that opens each era page in the docx

@@ -1,3 +1,5 @@
+import { img } from '../asset'
+
 // Theme elements for each Janam page. Everything sits behind the text, clear of
 // the garland (top-left) and peacock (bottom-left), and only animates once the
 // page is in view (see `.is-inview` rules in index.css).
@@ -171,10 +173,10 @@ export default function ThemeDecor({ theme }) {
             />
           ))}
           <div className="absolute right-[4%] bottom-[3%] flex items-end gap-1 opacity-80 sm:right-[6%]">
-            <img src="/images/icon-lotus.png" alt="" className="decor-bob w-12 sm:w-16" />
-            <img src="/images/icon-lotus.png" alt="" className="decor-bob w-8 sm:w-11" style={{ animationDelay: '1.2s' }} />
+            <img src={img('icon-lotus.png')} alt="" className="decor-bob w-12 sm:w-16" />
+            <img src={img('icon-lotus.png')} alt="" className="decor-bob w-8 sm:w-11" style={{ animationDelay: '1.2s' }} />
           </div>
-          <img src="/images/icon-waves.png" alt="" className="absolute right-[3%] bottom-[1%] w-24 opacity-40 sm:right-[5%] sm:w-32" />
+          <img src={img('icon-waves.png')} alt="" className="absolute right-[3%] bottom-[1%] w-24 opacity-40 sm:right-[5%] sm:w-32" />
         </div>
       )
     case 'rajputana':
@@ -208,7 +210,7 @@ export default function ThemeDecor({ theme }) {
               }}
             />
           ))}
-          <img src="/images/icon-waves.png" alt="" className="decor-bob absolute right-[4%] bottom-[3%] w-20 opacity-60 sm:w-28" />
+          <img src={img('icon-waves.png')} alt="" className="decor-bob absolute right-[4%] bottom-[3%] w-20 opacity-60 sm:w-28" />
         </div>
       )
     case 'temple':
@@ -263,15 +265,15 @@ export default function ThemeDecor({ theme }) {
             {Array.from({ length: 9 }, (_, i) => (
               <div key={i} className="decor-toran flex flex-col items-center" style={{ animationDelay: `${i * 200}ms` }}>
                 <span className="block w-px bg-[#8a6a2a]" style={{ height: `${14 + (i % 3) * 10}px` }} />
-                <img src="/images/marigold.png" alt="" className="w-5 sm:w-7" />
-                <img src="/images/marigold.png" alt="" className="-mt-1 w-4 sm:w-6" />
+                <img src={img('marigold.png')} alt="" className="w-5 sm:w-7" />
+                <img src={img('marigold.png')} alt="" className="-mt-1 w-4 sm:w-6" />
               </div>
             ))}
           </div>
           {PETALS.map((p, i) => (
             <img
               key={i}
-              src="/images/marigold.png"
+              src={img('marigold.png')}
               alt=""
               className="decor-petal absolute"
               style={{

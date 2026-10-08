@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
 import { CardContext, useInViewOnce } from './motion'
+import { img } from '../asset'
 
 // Teal watercolour blooms that wash over a page as it arrives (video transition)
 const INK = [
-  { src: '/images/ink-1.png', className: 'left-[-20%] top-[5%] w-[95%] sm:w-[60%]', delay: 0 },
-  { src: '/images/ink-2.png', className: 'right-[-25%] top-[30%] w-[100%] sm:w-[65%]', delay: 120 },
-  { src: '/images/ink-1.png', className: 'left-[10%] bottom-[-15%] w-[90%] sm:w-[55%] rotate-90', delay: 240 },
+  { src: img('ink-1.png'), className: 'left-[-20%] top-[5%] w-[95%] sm:w-[60%]', delay: 0 },
+  { src: img('ink-2.png'), className: 'right-[-25%] top-[30%] w-[100%] sm:w-[65%]', delay: 120 },
+  { src: img('ink-1.png'), className: 'left-[10%] bottom-[-15%] w-[90%] sm:w-[55%] rotate-90', delay: 240 },
 ]
 
 // One "page" of the invitation: paper, block-print frame, hanging garland
@@ -43,11 +44,11 @@ export default function Card({ id, label, children, peacock = true, className = 
         </div>
 
         <div className="card-garland pointer-events-none absolute top-0 left-[7%] w-[40%] max-w-[420px] select-none sm:w-[30%] lg:w-[24%]">
-          <img src="/images/garland.png" alt="" aria-hidden="true" className="animate-sway w-full" />
+          <img src={img('garland.png')} alt="" aria-hidden="true" className="animate-sway w-full" />
         </div>
         {peacock && (
           <img
-            src="/images/peacock.png"
+            src={img('peacock.png')}
             alt=""
             aria-hidden="true"
             className="card-peacock pointer-events-none absolute bottom-[calc(-1*var(--bw))] left-[calc(-1*var(--bw))] z-10 w-[62%] max-w-[520px] select-none sm:w-[44%] lg:w-[31%]"
